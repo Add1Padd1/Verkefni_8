@@ -1,5 +1,6 @@
 import { createCartLine, showCartContent } from "./lib/ui.js";
 import { formatPrice } from "./lib/helpers.js";
+export { deletetotal };
 
 /**
  * @typedef {Object} Product
@@ -31,6 +32,19 @@ const products = [
   },
 ];
 
+// function updateCartTotal() {
+//   var cartItemContainer = document.getElementsByClassName("cart-items")[0];
+//   var cartRows = document.getElementsByClassName("cart-row");
+//   for (var i = 0; i < cartRows.length; i++) {
+//     var cartRow = cartRows[i];
+//     var priceElementOne = cartRow.getElementsByClassName("price")[0];
+//     var quantityElementOne = cartRow.getElementsByClassName(
+//       "cart-quantity-input"
+//     )[0];
+//     console.log(priceElementOne, quantityElementOne);
+//   }
+// }
+
 /** Bæta vöru í körfu
  * @param {Product} product
  * @param {number} quantity
@@ -56,6 +70,7 @@ function addProductToCart(product, quantity) {
 var quantityhufa = 1;
 var quantitysokkar = 1;
 var quantityjakki = 1;
+var total = 0;
 function submitHandler(event) {
   // Komum í veg fyrir að form submiti
   event.preventDefault();
@@ -73,11 +88,16 @@ function submitHandler(event) {
   }
   if (productId == 1) {
     addProductToCart(product, quantityhufa);
+    total = total + quantityhufa * product.price;
   } else if (productId == 2) {
     addProductToCart(product, quantitysokkar);
+    total = total + quantitysokkar * product.price;
   } else {
     addProductToCart(product, quantityjakki);
+    total = total + quantityjakki * product.price;
   }
+  let oo = document.getElementById("samtals");
+  if (oo) oo.innerHTML = total.toString();
 
   // TODO hér þarf að finna fjölda sem á að bæta við körfu með því að athuga
   // á input
@@ -98,8 +118,12 @@ function changeHandler(event) {
   const childOfParent = changeParent.valueAsNumber;
   // MITT SHIT: Finna valueAsNumber
   const changeValue = event.target.valueAsNumber;
-  // MITT SHIT: Bara console log
-  console.log(changeValue);
+
+  // MITT SHIT: Staðsetja hvar samtals er
+  var totalClass = document.querySelector("tfoot tr .price");
+  // MITT SHIT: Finna textContent .price klassans (kannski óþarfi)
+
+  // MITT SHIT: Flokka hver fjöldi á við hverja vöru þegar bætt er við vöru í töflu
   if (productId == 1) {
     quantityhufa = changeValue;
   } else if (productId == 2) {
@@ -108,6 +132,13 @@ function changeHandler(event) {
     quantityjakki = changeValue;
   }
 }
+
+// MITT SHIT: Staðsetja hvar samtals er
+const totalClass = document.querySelector("tfoot tr .price");
+// MITT SHIT: Finna textContent .price klassans (kannski óþarfi)
+const totalClassText = totalClass?.textContent;
+// MITT SHIT: Bara console log
+console.log(totalClassText?.toString());
 // MITT SHIT: Ítra í gegnum þau sem fylki (`querySelectorAll` skilar NodeList)
 for (const form of Array.from(quantityLoc)) {
   // MITT SHIT: Bæta submit event listener við hvert
@@ -123,6 +154,12 @@ console.log(Array.from(addToCartForms));
 for (const form of Array.from(addToCartForms)) {
   // Bæta submit event listener við hvert
   form.addEventListener("submit", submitHandler);
+}
+
+function deletetotal(verd) {
+  var samtalsLoc = document.getElementById("samtals");
+  total = total - verd;
+  if (samtalsLoc) samtalsLoc.innerText = total.toString();
 }
 
 // TODO bæta við event handler á form sem submittar pöntun

@@ -40,7 +40,7 @@
             <td>3.000 kr.-</td>
             <td>
               <form class="add" method="post">
-                <label>Fjöldi: <input type="number" value="1" min="0" max="99"></label>
+                <label>Fjöldi: <input id="sokkarinput" type="number"  value="1" min="0" max="99"></label>
                 <button>Bæta við</button>
               </form>
             </td>
@@ -81,7 +81,7 @@
         <tfoot>
           <tr>
             <td colspan="3">Samtals</td>
-            <td><span class="price">0 kr.-</span></td>
+            <td><span id="samtals" class="price">0</span></td>
             <td></td>
           </tr>
         </tfoot>
@@ -103,7 +103,8 @@
       </form>
 
     </section>
-    <section class="receipt">
+    
+    <section class="receipt" style="display: none;">
       <h2>Kvittun</h2>
       <p>Takk fyrir að versla hjá okkur!</p>
       <p><a href=".">Kaupa meira</a>.</p>
