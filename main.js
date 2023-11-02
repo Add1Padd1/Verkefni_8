@@ -1,6 +1,6 @@
 import { createCartLine, showCartContent } from "./lib/ui.js";
 import { formatPrice } from "./lib/helpers.js";
-export { deletetotal };
+export { deleteTotal };
 
 /**
  * @typedef {Object} Product
@@ -31,19 +31,6 @@ const products = [
     price: 20_000,
   },
 ];
-
-// function updateCartTotal() {
-//   var cartItemContainer = document.getElementsByClassName("cart-items")[0];
-//   var cartRows = document.getElementsByClassName("cart-row");
-//   for (var i = 0; i < cartRows.length; i++) {
-//     var cartRow = cartRows[i];
-//     var priceElementOne = cartRow.getElementsByClassName("price")[0];
-//     var quantityElementOne = cartRow.getElementsByClassName(
-//       "cart-quantity-input"
-//     )[0];
-//     console.log(priceElementOne, quantityElementOne);
-//   }
-// }
 
 /** Bæta vöru í körfu
  * @param {Product} product
@@ -98,6 +85,7 @@ function submitHandler(event) {
   }
   let oo = document.getElementById("samtals");
   if (oo) oo.innerHTML = total.toString();
+  console.log(total);
 
   // TODO hér þarf að finna fjölda sem á að bæta við körfu með því að athuga
   // á input
@@ -156,10 +144,13 @@ for (const form of Array.from(addToCartForms)) {
   form.addEventListener("submit", submitHandler);
 }
 
-function deletetotal(verd) {
+function deleteTotal(verd) {
   var samtalsLoc = document.getElementById("samtals");
   total = total - verd;
-  if (samtalsLoc) samtalsLoc.innerText = total.toString();
+  console.log(total);
+  if (samtalsLoc) samtalsLoc.innerHTML = total.toString();
+
+  console.log(samtalsLoc?.innerText);
 }
 
 // TODO bæta við event handler á form sem submittar pöntun
