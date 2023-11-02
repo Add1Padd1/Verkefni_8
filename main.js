@@ -31,56 +31,6 @@ const products = [
   },
 ];
 
-// const addToCartForms = document.querySelectorAll(".add");
-
-// function addProductToCart(product) {
-//   const cartElement = document.querySelector(".cart");
-
-//   if (!cartElement) {
-//     console.warn("fann ekki .cart");
-//     return;
-//   }
-
-//   const emptyMessage = cartElement.querySelector(".empty-message");
-//   const cartContent = cartElement.querySelector(".cart-content");
-
-//   if (!emptyMessage || !cartContent) {
-//     console.warn("fann ekki element");
-//     return;
-//   }
-
-//   emptyMessage.classList.add("hidden");
-//   cartContent.classList.remove("hidden");
-
-//   const productElement = document.createElement("div");
-//   const productTitleElement = document.createElement("strong");
-//   const productPriceElement = document.createElement("span");
-//   productPriceElement.textContent = formatNumber(product.price);
-
-//   productTitleElement.textContent = product.title;
-
-//   productElement.appendChild(productTitleElement);
-//   productElement.appendChild(productPriceElement);
-//   cartContent.appendChild(productElement);
-// }
-
-// function submitHandler(event) {
-//   event.preventDefault();
-//   const parent = event.target.closest("tr");
-
-//   const productId = Number.parseInt(parent.dataset.productId);
-
-//   const product = products.find((i) => i.id === productId);
-
-//   addProductToCart(product);
-// }
-// function createAddToCartForm(form) {
-//   form.addEventListener("submit", submitHandler);
-// }
-// for (const form of Array.from(addToCartForms)) {
-//   createAddToCartForm(form);
-// }
-
 /** Bæta vöru í körfu
  * @param {Product} product
  * @param {number} quantity
@@ -88,7 +38,7 @@ const products = [
 function addProductToCart(product, quantity) {
   // Hér þarf að finna `<tbody>` í töflu og setja `cartLine` inn í það
   const cartTableBodyElement = document.querySelector(".cart table tbody");
-  console.log("cartTableBodyElement :>> ", cartTableBodyElement);
+  // console.log("cartTableBodyElement :>> ", cartTableBodyElement);
   if (!cartTableBodyElement) {
     console.warn("fann ekki .cart");
     return;
@@ -103,14 +53,15 @@ function addProductToCart(product, quantity) {
 
   // TODO sýna/uppfæra samtölu körfu
 }
-
+var quantityhufa = 1;
+var quantitysokkar = 1;
+var quantityjakki = 1;
 function submitHandler(event) {
   // Komum í veg fyrir að form submiti
   event.preventDefault();
 
   // Finnum næsta element sem er `<tr>`
   const parent = event.target.closest("tr");
-
   // Það er með attribute sem tiltekur auðkenni vöru, t.d. `data-product-id="1"`
   const productId = Number.parseInt(parent.dataset.productId);
 
@@ -120,17 +71,53 @@ function submitHandler(event) {
   if (!product) {
     return;
   }
+  if (productId == 1) {
+    addProductToCart(product, quantityhufa);
+  } else if (productId == 2) {
+    addProductToCart(product, quantitysokkar);
+  } else {
+    addProductToCart(product, quantityjakki);
+  }
 
   // TODO hér þarf að finna fjölda sem á að bæta við körfu með því að athuga
   // á input
-  const quantity = 1;
 
   // Bætum vöru í körfu (hér væri gott að bæta við athugun á því að varan sé til)
-  addProductToCart(product, quantity);
+}
+
+// MITT SHIT: Er að finna öll input type number
+const quantityLoc = document.querySelectorAll("input[type=number]");
+
+function changeHandler(event) {
+  // MITT SHIT: Parent node inputsins
+  const changeParent = event.target.closest("tr");
+
+  const productId = Number.parseInt(changeParent.dataset.productId);
+
+  // MITT SHIT: Hér er ég að finna valueAsNumber sem breytist alltaf þegar ég breyti input
+  const childOfParent = changeParent.valueAsNumber;
+  // MITT SHIT: Finna valueAsNumber
+  const changeValue = event.target.valueAsNumber;
+  // MITT SHIT: Bara console log
+  console.log(changeValue);
+  if (productId == 1) {
+    quantityhufa = changeValue;
+  } else if (productId == 2) {
+    quantitysokkar = changeValue;
+  } else {
+    quantityjakki = changeValue;
+  }
+}
+// MITT SHIT: Ítra í gegnum þau sem fylki (`querySelectorAll` skilar NodeList)
+for (const form of Array.from(quantityLoc)) {
+  // MITT SHIT: Bæta submit event listener við hvert
+  form.addEventListener("change", changeHandler);
 }
 
 // Finna öll form með class="add"
 const addToCartForms = document.querySelectorAll(".add");
+//MITT SHIT:
+console.log(Array.from(addToCartForms));
 
 // Ítra í gegnum þau sem fylki (`querySelectorAll` skilar NodeList)
 for (const form of Array.from(addToCartForms)) {
